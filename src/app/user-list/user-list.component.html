@@ -1,0 +1,76 @@
+<!-- user-list.component.html -->
+
+<div class="container my-5 py-5">
+  <input
+    type="text"
+    class="form-control w-100 mb-5 border border-secondary"
+    [(ngModel)]="searchTerm"
+    (blur)="searchUsers()"
+    placeholder="Search by User ID"
+  />
+  <div class="row align-items-center justify-content-center">
+    <ng-container *ngIf="searchTerm.trim() !== ''">
+      <ng-container *ngFor="let user of searchResults">
+        <div class="col-lg-4 mb-5">
+          <mat-card>
+            <img
+              mat-card-image
+              [src]="user.avatar"
+              alt="Avatar"
+              class="rounded-circle m-auto"
+              width="200px"
+            />
+            <mat-card-header class="justify-content-center">
+              <mat-card-title>{{ user.first_name }}</mat-card-title>
+              <mat-card-subtitle>{{ user.last_name }}</mat-card-subtitle>
+              <mat-card-subtitle>{{ user.email }}</mat-card-subtitle>
+            </mat-card-header>
+            <button
+              class="btn btn-warning"
+              (click)="navigateToUserDetail(user.id)"
+            >
+              View Details
+            </button>
+          </mat-card>
+        </div>
+      </ng-container>
+    </ng-container>
+  </div>
+  <div *ngIf="!searchResults">
+    <p>No users found.</p>
+  </div>
+
+  <div *ngIf="searchTerm.trim() === ''">
+    <div class="row align-items-center justify-content-center mt-5">
+      <ng-container *ngFor="let user of users">
+        <div class="col-lg-4 mb-5" (click)="navigateToUserDetail(user.id)">
+          <mat-card class="border border-warning">
+            <img
+              mat-card-image
+              [src]="user.avatar"
+              alt="Avatar"
+              class="rounded-circle m-auto"
+              width="200px"
+            />
+            <mat-card-header class="justify-content-center">
+              <mat-card-title>{{ user.first_name }}</mat-card-title>
+              <mat-card-subtitle>{{ user.last_name }}</mat-card-subtitle>
+            </mat-card-header>
+          </mat-card>
+        </div>
+      </ng-container>
+    </div>
+    <!-- Pagination buttons -->
+    <div class="row justify-content-center mt-2">
+      <div class="col-auto">
+        <button
+          class="btn btn-secondary rounded-circle me-3"
+          *ngFor="let pageNumber of pageNumbers"
+          (click)="goToPage(pageNumber)"
+        >
+          {{ pageNumber }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
